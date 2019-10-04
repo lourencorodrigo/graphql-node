@@ -1,18 +1,12 @@
 require('es6-promise').polyfill();
 require('universal-fetch');
 
-const endpoint = 'http://5d9697e3a824b400141d2796.mockapi.io/api/v1/users/';
-
-const getUsers = async () => {
-  const response = await fetch(endpoint);
-  const users = await response.json();
-  return users;
-}
+const endpoint = 'http://5d9697e3a824b400141d2796.mockapi.io/api/v1';
 
 const resolver = {
   Query: {
-    users: () => getUsers(),
-    user: () => users[0]
+    users: () => fetch(`${endpoint}/users`).then(response => response.json()),
+    user: (_, { id }) => fetch(`${endpoint}/users/${id}`).then(response => response.json())
   },
 
   Mutation: {
